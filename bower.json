@@ -1,0 +1,12 @@
+{
+  "name": "angular-grizzlist",
+  "description": "A starter project for AngularJS",
+  "version": "0.0.0",
+  "homepage": "https://github.com/ViRT/angular-grizzlist",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "~3.1.1",
+    "angular-local-storage": "v0.1.5"
+  }
+}

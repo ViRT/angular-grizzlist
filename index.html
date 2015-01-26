@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <title>Grizzlist</title>
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="bower/bootstrap/dist/css/bootstrap.css" />
+    <script src="bower/angular/angular.js"></script>
+    <script src="bower/angular-local-storage/dist/angular-local-storage.js"></script>
+    <script src="bower/angular-bootstrap/ui-bootstrap.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers/grizzlist.js"></script>
+    <script src="js/filters/slice.js"></script>
+</head>
+<body ng-controller="TableCtrl">
+<table>
+    <thead>
+    <tr>
+        <th ng-click="orderBy('name')">Name</th>
+        <th ng-click="orderBy('sex')">Sex</th>
+        <th ng-click="orderBy('profession')">Profession</th>
+        <th ng-click="orderBy('phone')">Phone</th>
+        <th ng-click="orderBy('country')">Country</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="member in members | filter:name | orderBy:order:reverse | slice:limit*(currentPage-1):limit*(currentPage-1)+limit | limitTo:limit">
+            <td>{{member.name}}</td>
+            <td>{{member.sex}}</td>
+            <td>{{member.profession}}</td>
+            <td>{{member.phone}}</td>
+            <td>{{member.country}}</td>
+        </tr>
+    </tbody>
+</table>
+<pagination direct-links="false" boundary-links="true" items-per-page="2" total-items="totalItems" ng-model="currentPage"></pagination>
+</body>
+</html>
