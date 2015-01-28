@@ -2,8 +2,8 @@
 
 var columns = angular.module('columns', ['ui.bootstrap']);
 
-columns.controller('ColumnsCtrl', ['$scope', '$modalInstance', 'localStorageService',
-    function ($scope, $modalInstance, localStorageService) {
+columns.controller('ColumnsCtrl', ['$scope', '$modalInstance',
+    function ($scope, $modalInstance) {
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
