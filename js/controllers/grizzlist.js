@@ -6,6 +6,7 @@ grizzlist.controller('TableCtrl', ['$scope', '$http', '$modal', 'localStorageSer
     function ($scope, $http, $modal, localStorageService) {
         $scope.limit = 2;
         $scope.totalItems = 4;
+        $scope.column = localStorageService.get('column') || {};
         $scope.currentPage = localStorageService.get('page') || 1;
         $scope.order = localStorageService.get('order') || 'name';
         $scope.reverse = localStorageService.get('reverse') || false;
@@ -22,8 +23,20 @@ grizzlist.controller('TableCtrl', ['$scope', '$http', '$modal', 'localStorageSer
             localStorageService.set('page', $scope.currentPage);
         });
 
+        $scope.$watch('column', function () {
+            localStorageService.set('column', $scope.column);
+        }, true);
+
         $http.get('data/members.json').success(function (data) {
             $scope.members = data;
             $scope.totalItems = data.length;
         });
+
+        $scope.editColumns = function () {
+            $modal.open({
+                templateUrl: 'template/modal/editcolumns.html',
+                controller: 'ColumnsCtrl',
+                scope: $scope
+            });
+        };
     }]);

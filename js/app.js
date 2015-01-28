@@ -1,3 +1,3 @@
 'use strict';
 
-var app = angular.module('app', ['grizzlist', 'LocalStorageModule', 'sliceFilter']);
+var app = angular.module('app', ['grizzlist', 'columns', 'LocalStorageModule', 'sliceFilter']);

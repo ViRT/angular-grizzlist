@@ -7,32 +7,41 @@
     <link rel="stylesheet" href="bower/bootstrap/dist/css/bootstrap.css" />
     <script src="bower/angular/angular.js"></script>
     <script src="bower/angular-local-storage/dist/angular-local-storage.js"></script>
-    <script src="bower/angular-bootstrap/ui-bootstrap.js"></script>
+    <script src="bower/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="js/app.js"></script>
     <script src="js/controllers/grizzlist.js"></script>
+    <script src="js/controllers/columns.js"></script>
     <script src="js/filters/slice.js"></script>
 </head>
 <body ng-controller="TableCtrl">
-<table>
+<table class="table table-striped">
     <thead>
     <tr>
-        <th ng-click="orderBy('name')">Name</th>
-        <th ng-click="orderBy('sex')">Sex</th>
-        <th ng-click="orderBy('profession')">Profession</th>
-        <th ng-click="orderBy('phone')">Phone</th>
-        <th ng-click="orderBy('country')">Country</th>
+        <th ng-show="column.name" ng-click="orderBy('name')">Name</th>
+        <th ng-show="column.sex" ng-click="orderBy('sex')">Sex</th>
+        <th ng-show="column.profession" ng-click="orderBy('profession')">Profession</th>
+        <th ng-show="column.phone" ng-click="orderBy('phone')">Phone</th>
+        <th ng-show="column.country" ng-click="orderBy('country')">Country</th>
     </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="member in members | filter:name | orderBy:order:reverse | slice:limit*(currentPage-1):limit*(currentPage-1)+limit | limitTo:limit">
-            <td>{{member.name}}</td>
-            <td>{{member.sex}}</td>
-            <td>{{member.profession}}</td>
-            <td>{{member.phone}}</td>
-            <td>{{member.country}}</td>
+    <tr>
+        <td ng-show="column.name"><input ng-model="query.name"/></td>
+        <td ng-show="column.sex"><input ng-model="query.sex"/></td>
+        <td ng-show="column.profession"><input ng-model="query.profession"/></td>
+        <td ng-show="column.phone"><input ng-model="query.phone"/></td>
+        <td ng-show="column.country"><input ng-model="query.country"/></td>
+    </tr>
+        <tr ng-repeat="member in members | filter:query | orderBy:order:reverse | slice:limit*(currentPage-1):limit*(currentPage-1)+limit">
+            <td ng-show="column.name">{{member.name}}</td>
+            <td ng-show="column.sex">{{member.sex}}</td>
+            <td ng-show="column.profession">{{member.profession}}</td>
+            <td ng-show="column.phone">{{member.phone}}</td>
+            <td ng-show="column.country">{{member.country}}</td>
         </tr>
     </tbody>
 </table>
 <pagination direct-links="false" boundary-links="true" items-per-page="2" total-items="totalItems" ng-model="currentPage"></pagination>
+<button type="button" class="btn btn-primary" ng-click="editColumns()">Edit columns</button>
 </body>
 </html>

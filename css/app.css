@@ -1,0 +1,7 @@
+table th {
+    cursor: pointer;
+}
+
+button.btn-primary {
+    display: inherit;
+}
