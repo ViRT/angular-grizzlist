@@ -4,39 +4,45 @@ var grizzlist = angular.module('grizzlist', ['ui.bootstrap']);
 
 grizzlist.controller('TableCtrl', ['$scope', '$http', '$modal', 'localStorageService',
     function ($scope, $http, $modal, localStorageService) {
+        $scope.fields = ["name", "sex", "profession", "phone", "country"];
         $scope.limit = 2;
-        $scope.totalItems = 4;
+        $scope.totalItems = 0;
         $scope.column = localStorageService.get('column') || {};
-        $scope.currentPage = localStorageService.get('page') || 1;
+        $scope.currentPage = parseInt(localStorageService.get('page')) || 1;
         $scope.order = localStorageService.get('order') || 'name';
-        $scope.reverse = localStorageService.get('reverse') || false;
+        $scope.reverse = localStorageService.get('reverse') === 'true';
 
         $scope.orderBy = function (field) {
-            $scope.order = field;
-            $scope.reverse = !$scope.reverse;
+            if ($scope.order != field) {
+                $scope.order = field;
+            } else {
+                $scope.reverse = !$scope.reverse;
+            }
 
             localStorageService.set('order', $scope.order);
             localStorageService.set('reverse', $scope.reverse);
         };
 
-        $scope.$watch('currentPage', function () {
-            localStorageService.set('page', $scope.currentPage);
-        });
+        $scope.pageChanged = function (page) {
+            localStorageService.set('page', page);
+        };
 
-        $scope.$watch('column', function () {
-            localStorageService.set('column', $scope.column);
-        }, true);
-
-        $http.get('data/members.json').success(function (data) {
-            $scope.members = data;
-            $scope.totalItems = data.length;
-        });
+        $scope.loadList = function () {
+            $http.get('data/members.json').success(function (data) {
+                $scope.members = data;
+                $scope.totalItems = data.length;
+            });
+        };
 
         $scope.editColumns = function () {
-            $modal.open({
+            var modalInstance = $modal.open({
                 templateUrl: 'template/modal/editcolumns.html',
                 controller: 'ColumnsCtrl',
                 scope: $scope
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+                localStorageService.set('column', selectedItem);
             });
         };
     }]);

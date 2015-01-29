@@ -5,6 +5,32 @@
     <title>Grizzlist</title>
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="bower/bootstrap/dist/css/bootstrap.css" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" />
+</head>
+<body ng-controller="TableCtrl" ng-init="loadList()">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th ng-repeat="field in fields" ng-class="{sorting_desc:order==field && !reverse, sorting_asc:order==field && reverse, sorting: order!=field }" ng-show="column[field]" ng-click="orderBy(field)">{{field}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td ng-repeat="field in fields" ng-show="column[field]"><input ng-model="query[field]"/></td>
+        </tr>
+            <tr ng-repeat="member in members | filter:query | orderBy:order:reverse | slice:limit*(currentPage-1):limit*(currentPage-1)+limit">
+                <td ng-repeat="field in fields" ng-show="column[field]">{{member[field]}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <pagination direct-links="false"
+                boundary-links="true"
+                items-per-page="limit"
+                total-items="totalItems"
+                on-select-page="pageChanged(page)"
+                ng-model="currentPage"></pagination>
+    <button type="button" class="btn btn-primary" ng-click="editColumns()">Edit columns</button>
+
     <script src="bower/angular/angular.js"></script>
     <script src="bower/angular-local-storage/dist/angular-local-storage.js"></script>
     <script src="bower/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -12,36 +38,5 @@
     <script src="js/controllers/grizzlist.js"></script>
     <script src="js/controllers/columns.js"></script>
     <script src="js/filters/slice.js"></script>
-</head>
-<body ng-controller="TableCtrl">
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th ng-show="column.name" ng-click="orderBy('name')">Name</th>
-        <th ng-show="column.sex" ng-click="orderBy('sex')">Sex</th>
-        <th ng-show="column.profession" ng-click="orderBy('profession')">Profession</th>
-        <th ng-show="column.phone" ng-click="orderBy('phone')">Phone</th>
-        <th ng-show="column.country" ng-click="orderBy('country')">Country</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td ng-show="column.name"><input ng-model="query.name"/></td>
-        <td ng-show="column.sex"><input ng-model="query.sex"/></td>
-        <td ng-show="column.profession"><input ng-model="query.profession"/></td>
-        <td ng-show="column.phone"><input ng-model="query.phone"/></td>
-        <td ng-show="column.country"><input ng-model="query.country"/></td>
-    </tr>
-        <tr ng-repeat="member in members | filter:query | orderBy:order:reverse | slice:limit*(currentPage-1):limit*(currentPage-1)+limit">
-            <td ng-show="column.name">{{member.name}}</td>
-            <td ng-show="column.sex">{{member.sex}}</td>
-            <td ng-show="column.profession">{{member.profession}}</td>
-            <td ng-show="column.phone">{{member.phone}}</td>
-            <td ng-show="column.country">{{member.country}}</td>
-        </tr>
-    </tbody>
-</table>
-<pagination direct-links="false" boundary-links="true" items-per-page="2" total-items="totalItems" ng-model="currentPage"></pagination>
-<button type="button" class="btn btn-primary" ng-click="editColumns()">Edit columns</button>
 </body>
 </html>

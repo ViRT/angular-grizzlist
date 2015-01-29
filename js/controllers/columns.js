@@ -7,4 +7,8 @@ columns.controller('ColumnsCtrl', ['$scope', '$modalInstance',
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
+
+        $scope.save = function () {
+            $modalInstance.close($scope.column);
+        };
     }]);
