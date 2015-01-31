@@ -8,13 +8,13 @@ grizzlist.controller('TableCtrl', ['$scope', '$http', '$modal', 'localStorageSer
         $scope.limit = 2;
         $scope.totalItems = 0;
         $scope.column = localStorageService.get('column') || {};
-        $scope.currentPage = parseInt(localStorageService.get('page')) || 1;
         $scope.order = localStorageService.get('order') || 'name';
         $scope.reverse = localStorageService.get('reverse') === 'true';
 
         $scope.orderBy = function (field) {
             if ($scope.order != field) {
                 $scope.order = field;
+                $scope.reverse = false;
             } else {
                 $scope.reverse = !$scope.reverse;
             }
@@ -23,14 +23,15 @@ grizzlist.controller('TableCtrl', ['$scope', '$http', '$modal', 'localStorageSer
             localStorageService.set('reverse', $scope.reverse);
         };
 
-        $scope.pageChanged = function (page) {
-            localStorageService.set('page', page);
+        $scope.pageChanged = function () {
+            localStorageService.set('page', $scope.currentPage);
         };
 
         $scope.loadList = function () {
             $http.get('data/members.json').success(function (data) {
                 $scope.members = data;
                 $scope.totalItems = data.length;
+                $scope.currentPage = parseInt(localStorageService.get('page')) || 1;
             });
         };
 

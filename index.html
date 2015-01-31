@@ -27,7 +27,7 @@
                 boundary-links="true"
                 items-per-page="limit"
                 total-items="totalItems"
-                on-select-page="pageChanged(page)"
+                ng-click="pageChanged()"
                 ng-model="currentPage"></pagination>
     <button type="button" class="btn btn-primary" ng-click="editColumns()">Edit columns</button>
 
