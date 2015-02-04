@@ -1,2 +1,4 @@
-.idea
-bower
+.idea/
+bower/
+node_modules/
+coverage/
